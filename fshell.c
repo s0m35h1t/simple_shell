@@ -15,21 +15,19 @@ char *builtin_str[] = {
 "exit",
 "alias",
 "env",
-"history",
 "setenv",
 "unsetenv"};
 
-int (*builtin_func[])(char **) = {
+static int (*builtin_func[])(char **) = {
 &cd,
 &help,
 &exitshell,
 &alias,
 &env,
-&history,
 &b_setenv,
 &b_unsetenv};
 
-char *builtins_help[] = {
+static char *builtins_help[] = {
 "Change the shell working directory.\nUSAGE : cd PATH\n",
 "USAGE: help bultin\n   Display information about builtin commands\n",
 "exit: exit [n]\n   Exit the shell. ",
@@ -67,7 +65,6 @@ _puts("\n");
 return (1);
 }
 
-
 /**
 * b_setenv - unsetenv builtin
 * @args: array of arguments
@@ -81,7 +78,8 @@ char *pname = _getenv("_");
 
 if (!args[1] && !args[2])
 {
-perror(pname);
+__puts(pname);
+__puts("USAGE: setenv NAME VALUE\n");
 return (1);
 }
 else
@@ -118,7 +116,8 @@ char *name = _getenv("_");
 
 if (args[1] == NULL)
 {
-perror(name);
+__puts(name);
+__puts("USAGE: unsetenv NAME\n");
 return (1);
 }
 
@@ -223,25 +222,35 @@ alicount++;
 
 return (1);
 }
-
-
 /**
-* history - history builtins
-* @args: array of arguments
-* Return: 1 or error
-*/
-int history(char **args __attribute__((unused)))
+ * _uitoa - converts an unsigned int to a string
+ * @count: unsigned int to convert
+ *
+ * Return: pointer to the converted string
+ */
+char *_uitoa(unsigned int count)
 {
-int i;
+char *numstr;
+unsigned int tmp, digits;
 
-for (i = 0; history_list[i]; i++)
+tmp = count;
+for (digits = 0; tmp != 0; digits++)
+tmp /= 10;
+numstr = malloc(sizeof(char) * (digits + 1));
+if (numstr == NULL)
 {
-/* _puts();*/
-_puts("  ");
-_puts(history_list[i]);
+perror("Fatal Error1");
+exit(127);
 }
-return (1);
+numstr[digits] = '\0';
+for (--digits; count; --digits)
+{
+numstr[digits] = (count % 10) + '0';
+count /= 10;
 }
+return (numstr);
+}
+
 
 /**
 * help - help builtins
@@ -289,7 +298,7 @@ int exitshell(char **args)
 {
 if (args[1])
 exit(atoi(args[1]));
-return (0);
+exit(EXIT_SUCCESS);
 }
 
 /* Shell function implementations. */
@@ -316,6 +325,7 @@ return (1);
 for (i = 0; i < num_builtins(); i++)
 {
 if (_strcmp(args[0], builtin_str[i]) == 0)
+
 return ((*builtin_func[i])(args));
 }
 array = split_line(strdup(PATH), ":");
@@ -332,7 +342,6 @@ break;
 
 return (launch_cmd(args));
 }
-
 
 /**
 * launch_cmd - fork and laun the cmd
@@ -378,7 +387,6 @@ perror(name);
 }
 return (1);
 }
-
 
 /**
 * split_line - slplit string to array
@@ -446,7 +454,6 @@ char *buffer = malloc(sizeof(char) * bufsize);
 int c;
 char *name = getenv("");
 
-
 if (!buffer)
 {
 perror(name);
@@ -485,7 +492,6 @@ exit(EXIT_FAILURE);
 }
 }
 }
-
 
 /**
 * display_prompt - print prompt
@@ -527,19 +533,10 @@ char *line;
 char **args;
 int status;
 int i;
-int j = hiscount;
-FILE *fp;
-char *name = _getenv("_");
 
 do {
 display_prompt();
 line = read_line();
-
-if (_strlen(line) > 1)
-{
-history_list[j] = str_concat(strdup(line), "\n");
-j++;
-}
 
 args = split_line(line, TOK_DELIM);
 
@@ -551,42 +548,10 @@ args[0] = strdup(aliass[i].value);
 }
 }
 
-if (args[0] && _strcmp(args[0], "simple_shell") == 0)
-{
-if (args[1])
-{
-fp = fopen(args[1], "r");
-if (fp != NULL)
-{
-while (fgets(line, BUFSIZE, fp) != NULL)
-{
-if (line)
-{
-args = split_line(line, TOK_DELIM);
 status = execute(args);
+
 free(line);
 free(args);
-}
-}
-fclose(fp);
-}
-else
-{
-perror(name);
-}
-}
-else
-{
-perror(name);
-}
-}
-else
-{
-status = execute(args);
-}
-free(line);
-free(args);
-free(fp);
 
 } while (status);
 }

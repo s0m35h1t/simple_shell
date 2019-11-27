@@ -9,6 +9,7 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <limits.h>
+#include <fcntl.h>
 #include <signal.h>
 /******Variable And Struct Declarations******/
 #define BUFSIZE 1024
@@ -33,9 +34,6 @@ char *value;
 
 alias_t *aliass;
 int alicount;
-char **history_list;
-int hiscount;
-
 
 /******Function Declarations******/
 
