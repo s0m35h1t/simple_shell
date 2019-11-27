@@ -38,4 +38,31 @@ char *builtins_help[] = {
 "history : Display the history list",
 "USAGE: setenv NAME VALUE\n   Initialize a new environment variable, or modify an existing one\n",
 "USAGE: unsetenv NAME\n   Remove an environment variable"};
+/**
+* num_builtins - number of builtins
+*
+* Return: void
+*/
+int num_builtins(void)
+{
+return (sizeof(builtin_str) / sizeof(char *));
+}
 
+/*Builtin function implementations.*/
+
+/**
+* env - env builtin
+* @args: argument list
+* Return: int
+*/
+int env(char **args __attribute__((unused)))
+{
+int i;
+
+for (i = 0; environ[i]; i++)
+{
+_puts(environ[i]);
+_puts("\n");
+}
+return (1);
+}
