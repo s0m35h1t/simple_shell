@@ -508,14 +508,15 @@ _puts("$> ");
 */
 void shell_loop(void)
 {
-char *line;
+char *line = NULL;
 char **args;
 int status;
-int i;
-
+int i, gstatus;
+size_t s = 1024;
 do {
 display_prompt();
-line = read_line();
+signal(SIGINT, sigintHandler);
+gstatus = getline(&line, &s, stdin);
 
 args = split_line(line, TOK_DELIM);
 
@@ -532,5 +533,5 @@ status = execute(args);
 free(line);
 free(args);
 
-} while (status);
+} while (status && gstatus != -1);
 }
