@@ -352,10 +352,10 @@ if (pid == 0)
 /* Child process */
 if (execve(args[0], args, environ) == -1)
 {
-_puts(name);
-_puts(": ");
-_puts(args[0]);
-_puts(": not found\n");
+__puts(name);
+__puts(": ");
+__puts(args[0]);
+__puts(": not found\n");
 }
 exit(EXIT_FAILURE);
 }
@@ -459,7 +459,6 @@ signal(SIGINT, sigintHandler);
 c = getchar();
 if (c == EOF)
 {
-_puts("\n");
 exit(0);
 }
 

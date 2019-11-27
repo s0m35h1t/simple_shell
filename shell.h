@@ -63,6 +63,10 @@ int b_setenv(char **args);
 int b_unsetenv(char **args);
 int alias(char **args);
 
+int __puts(const char *str);
+int __putchar(char c);
+
+
 /* char *getcwd(char *buf, size_t size);*/
 void  display_prompt(void);
 void shell_loop(void);
