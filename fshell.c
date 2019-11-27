@@ -421,3 +421,68 @@ token = strtok(NULL, delim);
 tokens[i] = NULL;
 return (tokens);
 }
+/**
+* sigintHandler - signal handler
+* @sig_num: sig num
+* Return: void
+*/
+void sigintHandler(int sig_num __attribute__((unused)))
+{
+signal(SIGINT, sigintHandler);
+_puts("\n");
+display_prompt();
+fflush(stdout);
+}
+
+/**
+* read_line - read line from stdin
+* Return: string
+*/
+char *read_line(void)
+{
+int bufsize = BUFSIZE;
+int i = 0;
+char *buffer = malloc(sizeof(char) * bufsize);
+int c;
+char *name = getenv("");
+
+
+if (!buffer)
+{
+perror(name);
+exit(EXIT_FAILURE);
+}
+
+while (1)
+{
+signal(SIGINT, sigintHandler);
+c = getchar();
+if (c == EOF)
+{
+_puts("\n");
+exit(0);
+}
+
+if (c == EOF || c == '\n')
+{
+buffer[i] = '\0';
+return (buffer);
+}
+else
+{
+buffer[i] = c;
+}
+i++;
+
+if (i >= bufsize)
+{
+bufsize += BUFSIZE;
+buffer = realloc(buffer, bufsize);
+if (!buffer)
+{
+perror(name);
+exit(EXIT_FAILURE);
+}
+}
+}
+}
