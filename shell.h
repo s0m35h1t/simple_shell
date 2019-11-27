@@ -19,6 +19,24 @@
 #define TOK_DELIM " \t\r\n\a"
 #define ALS_DELIM "=''\t\r\n\a"
 
+extern char **environ;
+/**
+ * struct alias - Defines a alias attributes
+ * @name: the name
+ * @value: the value
+ */
+typedef struct alias
+{
+char *name;
+char *value;
+} alias_t;
+
+alias_t *aliass;
+int alicount;
+char **history_list;
+int hiscount;
+
+
 /******Function Declarations******/
 
 char *_strdup(char *strtodup);
