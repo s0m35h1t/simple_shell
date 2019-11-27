@@ -66,3 +66,80 @@ _puts("\n");
 }
 return (1);
 }
+
+
+/**
+* b_setenv - unsetenv builtin
+* @args: array of arguments
+* Return: 1 or error
+*/
+int b_setenv(char **args)
+{
+int i = 0, j;
+char *variale;
+char *pname = _getenv("_");
+
+if (!args[1] && !args[2])
+{
+perror(pname);
+return (1);
+}
+else
+{
+variale = str_concat(args[1], "=");
+variale = str_concat(variale, args[2]);
+}
+
+while (environ[i])
+{
+j = 0;
+while (args[1][j] == environ[i][j])
+j++;
+if (environ[i][j] == '=')
+{
+environ[i] = variale;
+return (1);
+}
+i++;
+}
+environ[i] = variale;
+environ[i + 1] = NULL;
+return (1);
+}
+/**
+* b_unsetenv - unsetenv builtin
+* @args: array of arguments
+* Return: 1 or error
+*/
+int b_unsetenv(char **args)
+{
+int i = 0, j;
+char *name = _getenv("_");
+
+if (args[1] == NULL)
+{
+perror(name);
+return (1);
+}
+
+while (environ[i])
+{
+j = 0;
+while (args[1][j] == environ[i][j])
+j++;
+if (environ[i][j] == '=')
+{
+
+while (environ[i] != NULL)
+{
+environ[i] = environ[i + 1];
+i++;
+}
+environ[i - 1] = NULL;
+break;
+}
+i++;
+}
+
+return (1);
+}
