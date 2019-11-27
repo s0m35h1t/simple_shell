@@ -35,5 +35,13 @@ char **_realloc(char **ptr, size_t *size);
 char *_getenv(char *name);
 int _setenv(char *name, char *value, int overwrite);
 int _unsetenv(char *name);
-
+/*Function Declarations for builtin shell commands:*/
+int cd(char **args);
+int help(char **args);
+int exitshell(char **args);
+int history(char **args);
+int env(char **args);
+int b_setenv(char **args);
+int b_unsetenv(char **args);
+int alias(char **args);
 #endif /* _SHELL_H_ */
