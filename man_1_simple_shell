@@ -1,3 +1,50 @@
-.TH man 2 "17 Nov 2019" "1.0" "Simple Shell
-NAME
-   holshell \- command interpreter (shell)
+TH _HSH 1.0 "26 November 2019" "1.0" "Simple shell (hsh) man page"
+.SH NAME
+.hsh
+- a simple command interpreter (shell).
+.SH SYNOPSIS
+.B hsh [command_file [argument ...]]
+.br
+.B hsh [command_name [argument ...]]
+.SH DESCRIPTION
+     it's a CLI (command line interface).
+     it's a program that takes commands from the keyboard and gives them to the OS to perform.
+     on most unix-like systems, there's a program called bash that acts as the shell program. there are other shell programs.
+.SH Builtins
+in this part you will find all the builtins that we worked on.
+.br
+.IP env
+It prints the current environment
+.IP setenv
+It creates a new environment variable
+.IP unsetenv
+It deletes an environment variable with the given name.
+.IP exit
+It causes normal process termination.
+.IP help
+It display the man page of a given command.
+.IP history
+It displays the history list.
+.SH EXIT STATUS
+it'll exit with a non-zero status in error.
+.SH ENVIRONMENT
+.B HOME
+ set you to the login.
+.br
+.B PATH
+ Find the path.
+.br
+.B PWD
+ In which directory you work in.
+.br
+.B OLDPWD
+ The last directory you worked on.
+.br
+.B PPID
+ Giv you the parent id of the process.
+.br
+.SH BUGS
+we did several tests but we did not really find any bugs in our simple shell version
+.SH AUTHOR
+.B Adib Grouz.
+.B Rakia Somai.
