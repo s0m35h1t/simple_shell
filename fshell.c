@@ -332,3 +332,92 @@ break;
 
 return (launch_cmd(args));
 }
+
+
+/**
+* launch_cmd - fork and laun the cmd
+* @args: array of arguments
+* Return: 1 or error
+*/
+int launch_cmd(char **args)
+{
+pid_t pid, wpid;
+int status;
+char *name = _getenv("_");
+
+pid = fork();
+if (pid == 0)
+{
+
+/* Child process */
+if (execve(args[0], args, environ) == -1)
+{
+_puts(name);
+_puts(": ");
+_puts(args[0]);
+_puts(": not found\n");
+}
+exit(EXIT_FAILURE);
+}
+else if (pid < 0)
+{
+/* Error forking */
+perror(name);
+}
+else
+{
+/* Parent process */
+do {
+wpid = waitpid(pid, &status, WUNTRACED);
+if (!wpid)
+{
+perror(name);
+}
+
+} while (!WIFEXITED(status) && !WIFSIGNALED(status));
+}
+return (1);
+}
+
+
+/**
+* split_line - slplit string to array
+* @line: string to stplit
+* @delim: split delimator
+* Return: array of strings
+*/
+char **split_line(char *line, char *delim)
+{
+int bufsize = TOK_BUFSIZE, i = 0;
+char **tokens = malloc(bufsize * sizeof(char *));
+char *token;
+char *name = _getenv("_");
+
+if (!tokens)
+{
+perror(name);
+exit(EXIT_FAILURE);
+}
+
+token = strtok(line, delim);
+while (token != NULL)
+{
+tokens[i] = token;
+i++;
+
+if (i >= bufsize)
+{
+bufsize += TOK_BUFSIZE;
+tokens = realloc(tokens, bufsize *sizeof(char *));
+if (!tokens)
+{
+perror(name);
+exit(EXIT_FAILURE);
+}
+}
+
+token = strtok(NULL, delim);
+}
+tokens[i] = NULL;
+return (tokens);
+}
