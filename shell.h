@@ -44,4 +44,13 @@ int env(char **args);
 int b_setenv(char **args);
 int b_unsetenv(char **args);
 int alias(char **args);
+
+/* char *getcwd(char *buf, size_t size);*/
+void  display_prompt(void);
+void shell_loop(void);
+char *read_line(void);
+char **split_line(char *line, char *delim);
+int launch_cmd(char **args);
+int execute(char **args);
+
 #endif /* _SHELL_H_ */
