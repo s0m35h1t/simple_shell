@@ -49,43 +49,42 @@ int _strcmp(char *s1, char *s2)
 
 /**
  * str_concat - concatenates two strings
- * @s1: first string
- * @s2: second string
+ * @strc1: first string
+ * @strc2: second string
  * Return: pointer
  */
-char *str_concat(char *s1, char *s2)
+char *str_concat(char *strc1, char *strc2)
 {
-	unsigned int i, j, k, l;
-	char *s1_s2;
-	char *name = getenv("_");
+	char *newstring;
+	unsigned int len1, len2, newlen, i, j;
 
-	if (s1 == NULL)
-		i = 0;
+	len1 = 0;
+	len2 = 0;
+	if (strc1 == NULL)
+		len1 = 0;
 	else
 	{
-		for (i = 0; s1[i]; i++)
+		for (len1 = 0; strc1[len1]; len1++)
 			;
 	}
-	if (s2 == NULL)
-		j = 0;
+	if (strc2 == NULL)
+		len2 = 0;
 	else
 	{
-		for (j = 0; s2[j]; j++)
+		for (len2 = 0; strc2[len2]; len2++)
 			;
 	}
-	k = i + j + 1;
-	s1_s2 = malloc(k * sizeof(char));
-	if (s1_s2 == NULL)
-	{
-		perror(name);
-		exit(EXIT_FAILURE);
-	}
-	for (l = 0; l < i; l++)
-		s1_s2[l] = s1[l];
-	for (l = 0; l < j; l++)
-		s1_s2[l + i] = s2[l];
-	s1_s2[i + j] = '\0';
-	return (s1_s2);
+	newlen = len1 + len2 + 2;
+	newstring = malloc(newlen * sizeof(char));
+	if (newstring == NULL)
+		return (NULL);
+	for (i = 0; i < len1; i++)
+		newstring[i] = strc1[i];
+	newstring[i] = '/';
+	for (j = 0; j < len2; j++)
+		newstring[i + 1 + j] = strc2[j];
+	newstring[len1 + len2 + 1] = '\0';
+	return (newstring);
 }
 
 
