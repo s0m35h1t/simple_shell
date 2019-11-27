@@ -280,3 +280,55 @@ _puts("\n");
 _puts("Use the man command for information on other programs.\n");
 return (1);
 }
+/**
+* exitshell - exit builtins
+* @args: array of arguments
+* Return: 1 or error
+*/
+int exitshell(char **args)
+{
+if (args[1])
+exit(atoi(args[1]));
+return (0);
+}
+
+/* Shell function implementations. */
+
+/**
+* execute - execute th ecommand
+* @args: array of arguments
+* Return: 1 or error
+*/
+int execute(char **args)
+{
+int i = 0;
+char **array;
+struct stat st;
+char *PATH;
+char *str;
+char *cmd;
+
+PATH = _getenv("PATH");
+if (args[0] == NULL)
+/* An empty command was entered. */
+return (1);
+
+for (i = 0; i < num_builtins(); i++)
+{
+if (_strcmp(args[0], builtin_str[i]) == 0)
+return ((*builtin_func[i])(args));
+}
+array = split_line(strdup(PATH), ":");
+for (i = 0; array[i]; i++)
+{
+str = str_concat(array[i], "/");
+cmd = str_concat(str, args[0]);
+if (stat(cmd, &st) == 0)
+{
+args[0] = cmd;
+break;
+}
+}
+
+return (launch_cmd(args));
+}
