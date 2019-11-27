@@ -52,5 +52,5 @@ char *read_line(void);
 char **split_line(char *line, char *delim);
 int launch_cmd(char **args);
 int execute(char **args);
-
+void sigintHandler(int sig_num);
 #endif /* _SHELL_H_ */
