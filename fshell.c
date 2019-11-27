@@ -486,3 +486,108 @@ exit(EXIT_FAILURE);
 }
 }
 }
+
+
+/**
+* display_prompt - print prompt
+* Return: void
+*/
+void display_prompt(void)
+{
+char *PWD = _getenv("PWD");
+char *HOME = _getenv("HOME");
+char subPWD[BUFSIZE] = "~";
+unsigned int i;
+
+if (_strncmp(HOME, PWD, _strlen(HOME)) == 0)
+{
+for (i = _strlen(HOME); i < _strlen(PWD); i++)
+subPWD[i - _strlen(HOME) + 1] = PWD[i];
+
+_puts(_getenv("USERNAME"));
+_puts("@shell");
+_puts(subPWD);
+_puts("$> ");
+}
+else
+{
+_puts(_getenv("USERNAME"));
+_puts("@shell");
+_puts(PWD);
+_puts("$> ");
+}
+}
+
+/**
+* shell_loop - repeat shell loop
+* Return: void
+*/
+void shell_loop(void)
+{
+char *line;
+char **args;
+int status;
+int i;
+int j = hiscount;
+FILE *fp;
+char *name = _getenv("_");
+
+do {
+display_prompt();
+line = read_line();
+
+if (_strlen(line) > 1)
+{
+history_list[j] = str_concat(strdup(line), "\n");
+j++;
+}
+
+args = split_line(line, TOK_DELIM);
+
+for (i = 0; i < alicount; i++)
+{
+if (_strcmp(args[0], aliass[i].name) == 0)
+{
+args[0] = strdup(aliass[i].value);
+}
+}
+
+if (args[0] && _strcmp(args[0], "simple_shell") == 0)
+{
+if (args[1])
+{
+fp = fopen(args[1], "r");
+if (fp != NULL)
+{
+while (fgets(line, BUFSIZE, fp) != NULL)
+{
+if (line)
+{
+args = split_line(line, TOK_DELIM);
+status = execute(args);
+free(line);
+free(args);
+}
+}
+fclose(fp);
+}
+else
+{
+perror(name);
+}
+}
+else
+{
+perror(name);
+}
+}
+else
+{
+status = execute(args);
+}
+free(line);
+free(args);
+free(fp);
+
+} while (status);
+}
