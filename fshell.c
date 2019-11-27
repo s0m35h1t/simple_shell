@@ -499,7 +499,7 @@ char *HOME = _getenv("HOME");
 char subPWD[BUFSIZE] = "~";
 unsigned int i;
 
-if (_strncmp(HOME, PWD, _strlen(HOME)) == 0)
+if (strncmp(HOME, PWD, _strlen(HOME)) == 0)
 {
 for (i = _strlen(HOME); i < _strlen(PWD); i++)
 subPWD[i - _strlen(HOME) + 1] = PWD[i];
