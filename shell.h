@@ -32,8 +32,6 @@ char *name;
 char *value;
 } alias_t;
 
-alias_t *aliass;
-int alicount;
 
 /******Function Declarations******/
 
