@@ -11,8 +11,7 @@ int main(int argc __attribute__((unused)), char **argv __attribute__((unused)))
 char *buffer;
 char *name = getenv("_");
 buffer = malloc(BUFSIZE);
-aliass = malloc(BUFSIZE * sizeof(alias_t));
-if (buffer == NULL || aliass == NULL)
+if (buffer == NULL)
 {
 perror(name);
 exit(EXIT_FAILURE);
@@ -20,7 +19,6 @@ exit(EXIT_FAILURE);
 
 shell_loop();
 
-free(aliass);
 free(buffer);
 return (EXIT_SUCCESS);
 }

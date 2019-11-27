@@ -13,7 +13,6 @@ char *builtin_str[] = {
 "cd",
 "help",
 "exit",
-"alias",
 "env",
 "setenv",
 "unsetenv"};
@@ -22,7 +21,6 @@ static int (*builtin_func[])(char **) = {
 &cd,
 &help,
 &exitshell,
-&alias,
 &env,
 &b_setenv,
 &b_unsetenv};
@@ -31,9 +29,7 @@ static char *builtins_help[] = {
 "Change the shell working directory.\nUSAGE : cd PATH\n",
 "USAGE: help bultin\n   Display information about builtin commands\n",
 "exit: exit [n]\n   Exit the shell. ",
-"alias: alias [name[=value] ... ]\n   Define or display aliases.\n",
 "env: prints the current environment\n",
-"history : Display the history list",
 "USAGE: setenv NAME VALUE\n   Initialize a new environment variable, or modify an existing one\n",
 "USAGE: unsetenv NAME\n   Remove an environment variable"};
 /**
@@ -179,49 +175,6 @@ _setenv("PWD", PWD, 1);
 return (1);
 }
 
-/**
-* alias - alias builtins
-* @args: array of arguments
-* Return: 1 or error
-*/
-int alias(char **args)
-{
-int i, j = 0;
-char *name;
-char *value;
-alias_t alias;
-
-if (!args[1])
-{
-for (i = 0; aliass[i].name; i++)
-{
-printf("%s='%s'\n", aliass[i].name, aliass[i].value);
-}
-}
-else
-{
-for (j = 1; args[j]; j++)
-{
-name = strtok(args[j], "='");
-alias.name = strdup(name);
-value = strtok(NULL, "='");
-alias.value = strdup(value);
-
-for (i = 0; aliass[i].name; i++)
-{
-if (strcmp(aliass[i].name, name) == 0)
-break;
-}
-aliass[i] = alias;
-if (i == alicount)
-{
-alicount++;
-}
-}
-}
-
-return (1);
-}
 /**
  * _uitoa - converts an unsigned int to a string
  * @count: unsigned int to convert
@@ -511,7 +464,7 @@ void shell_loop(void)
 char *line = NULL;
 char **args;
 int status;
-int i, gstatus;
+int gstatus;
 size_t s = 1024;
 do {
 display_prompt();
@@ -519,14 +472,6 @@ signal(SIGINT, sigintHandler);
 gstatus = getline(&line, &s, stdin);
 
 args = split_line(line, TOK_DELIM);
-
-for (i = 0; i < alicount; i++)
-{
-if (_strcmp(args[0], aliass[i].name) == 0)
-{
-args[0] = strdup(aliass[i].value);
-}
-}
 
 status = execute(args);
 
