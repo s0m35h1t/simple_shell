@@ -223,3 +223,60 @@ alicount++;
 
 return (1);
 }
+
+
+/**
+* history - history builtins
+* @args: array of arguments
+* Return: 1 or error
+*/
+int history(char **args __attribute__((unused)))
+{
+int i;
+
+for (i = 0; history_list[i]; i++)
+{
+/* _puts();*/
+_puts("  ");
+_puts(history_list[i]);
+}
+return (1);
+}
+
+/**
+* help - help builtins
+* @args: array of arguments
+* Return: 1 or error
+*/
+int help(char **args)
+{
+int i;
+if (args[1])
+{
+for (i = 0; i < num_builtins(); i++)
+{
+if (_strcmp(builtin_str[i], args[1]) == 0)
+{
+_puts(builtins_help[i]);
+}
+}
+
+return (1);
+}
+
+_puts("Holshell,  \n");
+_puts("These shell commands are defined internally.");
+_puts("  Type `help' to see this list.");
+_puts("Type `help name' to find out more about the function `name'..\n");
+_puts("The following are built in:\n");
+
+for (i = 0; i < num_builtins(); i++)
+{
+_puts("  ");
+_puts(builtin_str[i]);
+_puts("\n");
+}
+
+_puts("Use the man command for information on other programs.\n");
+return (1);
+}
