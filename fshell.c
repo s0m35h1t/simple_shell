@@ -143,3 +143,83 @@ i++;
 
 return (1);
 }
+/**
+* cd - cd builtins
+* @args: array of arguments
+* Return: 1 or error
+*/
+int cd(char **args)
+{
+char PWD[BUFSIZE];
+char oPWD[BUFSIZE];
+char *dir;
+char *name = getenv("");
+
+if (getcwd(oPWD, sizeof(oPWD)) == NULL)
+perror(name);
+
+if (args[1])
+{
+if (_strcmp(args[1], "~") == 0)
+dir = strdup(_getenv("HOME"));
+else if (_strcmp(args[1], "-") == 0)
+dir = strdup(_getenv("OLDPWD"));
+else
+dir = args[1];
+}
+else
+dir = strdup(_getenv("HOME"));
+
+_setenv("OLDPWD", oPWD, 1);
+if (chdir(dir) != 0)
+perror(name);
+
+if (getcwd(PWD, sizeof(PWD)) == NULL)
+perror(name);
+_setenv("PWD", PWD, 1);
+return (1);
+}
+
+/**
+* alias - alias builtins
+* @args: array of arguments
+* Return: 1 or error
+*/
+int alias(char **args)
+{
+int i, j = 0;
+char *name;
+char *value;
+alias_t alias;
+
+if (!args[1])
+{
+for (i = 0; aliass[i].name; i++)
+{
+printf("%s='%s'\n", aliass[i].name, aliass[i].value);
+}
+}
+else
+{
+for (j = 1; args[j]; j++)
+{
+name = strtok(args[j], "='");
+alias.name = strdup(name);
+value = strtok(NULL, "='");
+alias.value = strdup(value);
+
+for (i = 0; aliass[i].name; i++)
+{
+if (strcmp(aliass[i].name, name) == 0)
+break;
+}
+aliass[i] = alias;
+if (i == alicount)
+{
+alicount++;
+}
+}
+}
+
+return (1);
+}
