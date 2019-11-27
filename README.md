@@ -2,8 +2,8 @@
 
 ## <a id="Introduction_4"></a>Introduction
 
-This project is intended to create a simplified version of the linux shell.  
-this simplified version must contain the same functions as the original version.  
+This project is intended to create a simplified version of the linux shell.
+this simplified version must contain the same functions as the original version.
 It includes everything we learned in previous projects, see C language and linux.
 
 ## <a id="Usage_9"></a>Usage
@@ -59,6 +59,6 @@ the use of our simple shell is as simple as the original version that was create
 
 # <a id="TEAM_54"></a>TEAM
 
-if you need some help to create a simplified version of simple shell, you can contact us here:  
-[https://twitter.com/SomaiRakia](https://twitter.com/SomaiRakia)  
+if you need some help to create a simplified version of simple shell, you can contact us here:
+[https://twitter.com/SomaiRakia](https://twitter.com/SomaiRakia)
 [https://twitter.com/GruiseAdib](https://twitter.com/GruiseAdib)
